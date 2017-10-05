@@ -7,10 +7,21 @@
 
 package com.kotlinnlp.languagedetector.utils
 
+import com.kotlinnlp.neuraltokenizer.NeuralTokenizer
+import com.kotlinnlp.neuraltokenizer.NeuralTokenizerModel
+import java.io.File
+
 /**
  * A simple tokenizer which splits a text by spacing and pointing chars.
+ *
+ * @param cjkModel the model of the [NeuralTokenizer] used to tokenize Chinese, Japanese and Korean texts
  */
-class TextTokenizer {
+class TextTokenizer(cjkModel: NeuralTokenizerModel) {
+
+  /**
+   * The min percentage of chars that a token must have to be considered Chinese, Japanese or Korean
+   */
+  private val MIN_CJK_CHARS_PERCENTAGE = 0.40
 
   /**
    * The currently buffered token.
@@ -21,6 +32,21 @@ class TextTokenizer {
    * The list of tokens that is filled during the tokenization.
    */
   private val tokens = mutableListOf<String>()
+
+  /**
+   *
+   */
+  private val CJK_CHARS_FILENAME: String = this::class.java.getResource("/CJKChars.txt").file
+
+  /**
+   * A set of most frequent Chinese, Japanese and Korean characters.
+   */
+  private val cjkChars: Set<Char> = setOf(*File(this.CJK_CHARS_FILENAME).readLines().map { it[0] }.toTypedArray())
+
+  /**
+   * The [NeuralTokenizer] for Chinese, Japanese and Korean texts.
+   */
+  private val cjkNeuralTokenizer = NeuralTokenizer(model = cjkModel)
 
   /**
    * Tokenize a text by spacing an punctuation chars.
@@ -41,7 +67,7 @@ class TextTokenizer {
       this.addToken()
     }
 
-    return tokens.toList()
+    return this.tokenizeCJKTokens()
   }
 
   /**
@@ -89,5 +115,38 @@ class TextTokenizer {
 
     this.tokens.clear()
     this.tokenBuffer.setLength(0)
+  }
+
+  /**
+   * Tokenize all [tokens] that are identified as Chinese, Japanese or Korean, returning a more complete list.
+   * This is necessary because often spacing chars are not used in those languages.
+   *
+   * @return a List of tokens ([String]s)
+   */
+  private fun tokenizeCJKTokens(): List<String> {
+
+    val finalTokens = mutableListOf<String>()
+
+    this.tokens.forEach { token ->
+
+      if (token.isCJK()) {
+        cjkNeuralTokenizer.tokenize(token).forEach { sentence -> sentence.tokens.forEach { finalTokens.add(it.form) } }
+
+      } else {
+        finalTokens.add(token)
+      }
+    }
+
+    return finalTokens.toList()
+  }
+
+  /**
+   *
+   */
+  private fun String.isCJK(): Boolean {
+
+    val CJKCharsCount = this.sumBy { if (it in this@TextTokenizer.cjkChars) 1 else 0 }
+
+    return (CJKCharsCount.toDouble() / this.length) >= this@TextTokenizer.MIN_CJK_CHARS_PERCENTAGE
   }
 }
