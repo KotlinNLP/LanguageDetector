@@ -7,10 +7,7 @@
 
 package com.kotlinnlp.languagedetector
 
-import com.kotlinnlp.languagedetector.utils.FrequencyDictionary
-import com.kotlinnlp.languagedetector.utils.Language
-import com.kotlinnlp.languagedetector.utils.toHierarchySequence
-import com.kotlinnlp.languagedetector.utils.tokenize
+import com.kotlinnlp.languagedetector.utils.*
 import com.kotlinnlp.simplednn.deeplearning.attentionnetwork.han.HANEncoder
 import com.kotlinnlp.simplednn.deeplearning.attentionnetwork.han.HANParameters
 import com.kotlinnlp.simplednn.deeplearning.attentionnetwork.han.HierarchySequence
@@ -18,15 +15,20 @@ import com.kotlinnlp.simplednn.simplemath.ndarray.Shape
 import com.kotlinnlp.simplednn.simplemath.ndarray.dense.DenseNDArray
 import com.kotlinnlp.simplednn.simplemath.ndarray.dense.DenseNDArrayFactory
 import java.util.*
+import kotlin.coroutines.experimental.buildSequence
 
 /**
  * A language detector based on Hierarchic Attention Networks.
  * If the [frequencyDictionary] is not null it is used to boost the predictions.
  *
  * @property model the model of this [LanguageDetector]
+ * @property tokenizer the [TextTokenizer] to tokenize input texts
  * @property frequencyDictionary the words frequency dictionary (default = null)
  */
-class LanguageDetector(val model: LanguageDetectorModel, val frequencyDictionary: FrequencyDictionary? = null) {
+class LanguageDetector(
+  val model: LanguageDetectorModel,
+  val tokenizer: TextTokenizer,
+  val frequencyDictionary: FrequencyDictionary? = null) {
 
   /**
    * The encoder of the input.
@@ -62,7 +64,7 @@ class LanguageDetector(val model: LanguageDetectorModel, val frequencyDictionary
 
     val classifications = mutableListOf<DenseNDArray>()
 
-    text.tokenize(maxTokensLength = this.model.maxTokensLength).forEach { token ->
+    this.loopTokens(text).forEach { token ->
 
       val tokenClassification = this.forward(token)
 
@@ -95,7 +97,7 @@ class LanguageDetector(val model: LanguageDetectorModel, val frequencyDictionary
 
     val tokensClassifications = mutableListOf<Pair<String, DenseNDArray>>()
 
-    text.tokenize(maxTokensLength = this.model.maxTokensLength).forEach { token ->
+    this.loopTokens(text).forEach { token ->
 
       var segmentClassification = this.forward(token)
 
@@ -111,6 +113,17 @@ class LanguageDetector(val model: LanguageDetectorModel, val frequencyDictionary
     }
 
     return tokensClassifications.toList()
+  }
+
+  /**
+   * Tokenize the given [text] and yield its tokens.
+   *
+   * @param text the input text
+   */
+  fun loopTokens(text: String) = buildSequence {
+
+    this@LanguageDetector.tokenizer.tokenize(text, maxTokensLength = this@LanguageDetector.model.maxTokensLength)
+      .forEach { token -> yield(token) }
   }
 
   /**
