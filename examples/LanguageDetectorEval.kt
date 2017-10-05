@@ -10,28 +10,36 @@ import com.kotlinnlp.languagedetector.LanguageDetectorModel
 import com.kotlinnlp.languagedetector.dataset.CorpusReader
 import com.kotlinnlp.languagedetector.helpers.ValidationHelper
 import com.kotlinnlp.languagedetector.utils.FrequencyDictionary
+import com.kotlinnlp.languagedetector.utils.TextTokenizer
+import com.kotlinnlp.neuraltokenizer.NeuralTokenizerModel
 import java.io.File
 import java.io.FileInputStream
 
 /**
  * Execute an evaluation of a [LanguageDetector], loading its serialized model from the file given as first argument.
- * The second argument is the filename of the [FrequencyDictionary] serialized model.
- * The third argument is the filename of the test set.
+ * The second argument is the filename of the CJK NeuralTokenizer serialized model.
+ * The third argument is the filename of the [FrequencyDictionary] serialized model.
+ * The fourth argument is the filename of the test set.
  */
 fun main(args: Array<String>) {
 
   println("Loading model from '${args[0]}'...")
   val model = LanguageDetectorModel.load(FileInputStream(File(args[0])))
 
-  println("Loading dictionary from '${args[1]}'...")
-  val dictionary = FrequencyDictionary.load(FileInputStream(File(args[1])))
+  println("Loading CJK NeuralTokenizer model from '${args[1]}'...")
+  val cjkModel = NeuralTokenizerModel.load(FileInputStream(File(args[1])))
 
-  println("Reading dataset from '${args[2]}'...")
-  val testSet = CorpusReader().read(file = File(args[2]))
+  println("Loading dictionary from '${args[2]}'...")
+  val dictionary = FrequencyDictionary.load(FileInputStream(File(args[2])))
+
+  println("Reading dataset from '${args[3]}'...")
+  val testSet = CorpusReader().read(file = File(args[3]))
 
   println("\n-- START VALIDATION ON %d TEST SENTENCES".format(testSet.size))
 
-  val helper = ValidationHelper(languageDetector = LanguageDetector(model = model, frequencyDictionary = dictionary))
+  val textTokenizer = TextTokenizer(cjkModel)
+  val langDetector = LanguageDetector(model = model, tokenizer = textTokenizer, frequencyDictionary = dictionary)
+  val helper = ValidationHelper(langDetector)
   val accuracy: Double = helper.validate(testSet = testSet)
 
   println()

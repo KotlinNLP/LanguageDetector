@@ -13,6 +13,8 @@ import com.kotlinnlp.languagedetector.dataset.Example
 import com.kotlinnlp.languagedetector.helpers.TrainingHelper
 import com.kotlinnlp.languagedetector.helpers.ValidationHelper
 import com.kotlinnlp.languagedetector.utils.FrequencyDictionary
+import com.kotlinnlp.languagedetector.utils.TextTokenizer
+import com.kotlinnlp.neuraltokenizer.NeuralTokenizerModel
 import com.kotlinnlp.simplednn.core.functionalities.updatemethods.adagrad.AdaGradMethod
 import com.kotlinnlp.simplednn.core.functionalities.updatemethods.adam.ADAMMethod
 import com.kotlinnlp.simplednn.core.layers.LayerType
@@ -22,7 +24,8 @@ import java.io.FileInputStream
 /**
  * Train and validate a LanguageDetector, using the datasets given as arguments.
  * The model is saved into the file given as first argument.
- * The second argument is the filename of the [FrequencyDictionary] serialized model.
+ * The second argument is the filename of the CJK NeuralTokenizer serialized model.
+ * The third argument is the filename of the [FrequencyDictionary] serialized model.
  * The following arguments are the filenames of the training, validation and test datasets.
  */
 fun main(args: Array<String>) {
@@ -40,7 +43,8 @@ fun main(args: Array<String>) {
   println("\n-- MODEL:")
   println(model)
 
-  val langDetector = LanguageDetector(model)
+  val textTokenizer = TextTokenizer(cjkModel = NeuralTokenizerModel.load(FileInputStream(File(args[1]))))
+  val langDetector = LanguageDetector(model = model, tokenizer = textTokenizer)
 
   println("\n-- START TRAINING ON %d SENTENCES".format(dataset.training.size))
 
@@ -58,11 +62,12 @@ fun main(args: Array<String>) {
 
   println("\n-- START VALIDATION ON %d TEST SENTENCES".format(dataset.test.size))
 
-  println("\n-- Loading words frequency dictionary from '${args[1]}'")
-  val dictionary = FrequencyDictionary.load(FileInputStream(File(args[1])))
+  println("\n-- Loading words frequency dictionary from '${args[2]}'")
+  val dictionary = FrequencyDictionary.load(FileInputStream(File(args[2])))
 
   val validationLangDetector = LanguageDetector(
     model = LanguageDetectorModel.load(FileInputStream(File(args[0]))),
+    tokenizer = textTokenizer,
     frequencyDictionary = dictionary)
 
   val accuracy: Double = ValidationHelper(validationLangDetector).validate(dataset.test)
@@ -78,9 +83,9 @@ fun readDataset(args: Array<String>): Dataset {
   val reader = CorpusReader()
 
   return Dataset(
-    training = readDatasetFile(filename = args[2], reader = reader, datasetName = "training"),
-    validation = readDatasetFile(filename = args[3], reader = reader, datasetName = "validation"),
-    test = readDatasetFile(filename = args[4], reader = reader, datasetName = "test")
+    training = readDatasetFile(filename = args[3], reader = reader, datasetName = "training"),
+    validation = readDatasetFile(filename = args[4], reader = reader, datasetName = "validation"),
+    test = readDatasetFile(filename = args[5], reader = reader, datasetName = "test")
   )
 }
 
