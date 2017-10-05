@@ -28,6 +28,7 @@ import java.io.FileInputStream
 fun main(args: Array<String>) {
 
   println("-- READING DATASET:")
+  val dataset = readDataset(args)
 
   val model = LanguageDetectorModel(
     embeddingsSize = 50,
@@ -39,7 +40,6 @@ fun main(args: Array<String>) {
   println("\n-- MODEL:")
   println(model)
 
-  val dataset = readDataset(args)
   val langDetector = LanguageDetector(model)
 
   println("\n-- START TRAINING ON %d SENTENCES".format(dataset.training.size))
