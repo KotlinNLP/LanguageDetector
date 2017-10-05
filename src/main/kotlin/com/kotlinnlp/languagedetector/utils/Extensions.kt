@@ -11,11 +11,6 @@ import com.kotlinnlp.simplednn.deeplearning.attentionnetwork.han.HierarchySequen
 import com.kotlinnlp.simplednn.deeplearning.embeddings.EmbeddingsContainerByStrings
 
 /**
- * The helper to tokenize texts.
- */
-private val tokenizer = TextTokenizer()
-
-/**
  * Convert the [CharSequence] into a [HierarchySequence] of Embeddings as input of the HAN.
  *
  * @param embeddings the Embeddings container from which to extract Embeddings vector
@@ -28,12 +23,3 @@ fun CharSequence.toHierarchySequence(embeddings: EmbeddingsContainerByStrings, d
     size = this.length,
     init = { charIndex -> embeddings.getEmbedding(this[charIndex].toString(), dropout = dropout).array.values }
   ))
-
-/**
- * Split the string in tokens by spacing and punctuation chars.
- *
- * @param maxTokensLength the max length of a token (longer tokens will be split)
- *
- * @return an ArrayList of tokens (strings)
- */
-fun String.tokenize(maxTokensLength: Int): List<String> = tokenizer.tokenize(this, maxTokensLength = maxTokensLength)
