@@ -9,7 +9,6 @@ package com.kotlinnlp.languagedetector.helpers
 
 import com.kotlinnlp.languagedetector.LanguageDetector
 import com.kotlinnlp.languagedetector.dataset.Example
-import com.kotlinnlp.languagedetector.utils.tokenize
 import com.kotlinnlp.simplednn.core.functionalities.updatemethods.UpdateMethod
 import com.kotlinnlp.simplednn.core.functionalities.updatemethods.adagrad.AdaGradMethod
 import com.kotlinnlp.simplednn.core.functionalities.updatemethods.adam.ADAMMethod
@@ -148,7 +147,7 @@ class TrainingHelper(
    */
   private fun learnFromExample(example: Example) {
 
-    example.text.tokenize(maxTokensLength = this.languageDetector.model.maxTokensLength).forEach { token ->
+    this.languageDetector.loopTokens(example.text).forEach { token ->
 
       val output: DenseNDArray = this.languageDetector.forward(token, dropout = this.dropout)
       val goldClassIndex: Int = example.language.id
