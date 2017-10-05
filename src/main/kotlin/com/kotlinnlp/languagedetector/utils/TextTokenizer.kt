@@ -13,16 +13,6 @@ package com.kotlinnlp.languagedetector.utils
 class TextTokenizer {
 
   /**
-   * Regular expression that matches spacing chars.
-   */
-  private val spacingRegex = Regex("\\s|\\t|\\n|\\r")
-
-  /**
-   * Regular expression that matches punctuation chars.
-   */
-  private val punctRegex = Regex("[.,;:\\-_!?$%|()\\[\\]{}\\\\/'\"`~^&*#=]")
-
-  /**
    * The currently buffered token.
    */
   private val tokenBuffer = StringBuffer()
@@ -64,7 +54,7 @@ class TextTokenizer {
    */
   private fun processChar(char: Char, forceEnd: Boolean) {
 
-    if (char.isSpace() || char.isPunct()) {
+    if (!char.isLetter()) {
 
       this.addToken()
 
@@ -100,14 +90,4 @@ class TextTokenizer {
     this.tokens.clear()
     this.tokenBuffer.setLength(0)
   }
-
-  /**
-   * @return a Boolean indicating if this is a spacing char
-   */
-  private fun Char.isSpace() = this@TextTokenizer.spacingRegex.matches(this.toString())
-
-  /**
-   * @return a Boolean indicating if this is a punctuation char
-   */
-  private fun Char.isPunct() = this@TextTokenizer.punctRegex.matches(this.toString())
 }
