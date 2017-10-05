@@ -16,6 +16,7 @@
         <dokka.version>0.9.13</dokka.version>
         <klaxon.version>0.30</klaxon.version>
         <simplednn.version>0.1.0</simplednn.version>
+        <neuraltokenizer.version>0.1.0</neuraltokenizer.version>
     </properties>
 
     <repositories>
@@ -163,6 +164,12 @@
             <groupId>com.kotlinnlp</groupId>
             <artifactId>simplednn</artifactId>
             <version>${simplednn.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.kotlinnlp</groupId>
+            <artifactId>neuraltokenizer</artifactId>
+            <version>${neuraltokenizer.version}</version>
         </dependency>
     </dependencies>
 </project>
