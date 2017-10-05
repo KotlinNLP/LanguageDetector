@@ -89,11 +89,11 @@ class LanguageDetector(val model: LanguageDetectorModel, val frequencyDictionary
    *
    * @param text the input text
    *
-   * @return a list of classifications (as [DenseNDArray]s) for each token
+   * @return a list of classifications (as [DenseNDArray]s) for each token as Pairs of <token, classification>
    */
-  fun classifyTokens(text: String): List<DenseNDArray> {
+  fun classifyTokens(text: String): List<Pair<String, DenseNDArray>> {
 
-    val tokensClassifications = mutableListOf<DenseNDArray>()
+    val tokensClassifications = mutableListOf<Pair<String, DenseNDArray>>()
 
     text.tokenize(maxTokensLength = this.model.maxTokensLength).forEach { token ->
 
@@ -107,7 +107,7 @@ class LanguageDetector(val model: LanguageDetectorModel, val frequencyDictionary
         }
       }
 
-      tokensClassifications.add(segmentClassification)
+      tokensClassifications.add(Pair(token, segmentClassification))
     }
 
     return tokensClassifications.toList()
