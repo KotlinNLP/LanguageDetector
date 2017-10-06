@@ -61,7 +61,7 @@ class TextTokenizer(cjkModel: NeuralTokenizerModel) {
 
     this.resetBuffers()
 
-    text.forEachIndexed { i, char -> this.processChar(char = char, forceEnd = ((i + 1) % maxTokensLength) == 0) }
+    text.forEach { this.processChar(char = it, maxTokensLength = maxTokensLength) }
 
     if (this.tokenBuffer.isNotEmpty()) {
       this.addToken()
@@ -76,9 +76,9 @@ class TextTokenizer(cjkModel: NeuralTokenizerModel) {
    * char is added to the buffered token.
    *
    * @param char a Char of the processing string
-   * @param forceEnd a Boolean indicating if the current buffered token must end after processing the given [char]
+   * @param maxTokensLength the max length of a token
    */
-  private fun processChar(char: Char, forceEnd: Boolean) {
+  private fun processChar(char: Char, maxTokensLength: Int) {
 
     if (!char.isLetter()) {
 
@@ -88,7 +88,7 @@ class TextTokenizer(cjkModel: NeuralTokenizerModel) {
 
       this.tokenBuffer.append(char)
 
-      if (forceEnd) {
+      if (this.tokenBuffer.length >= maxTokensLength) {
         this.addToken()
       }
     }
