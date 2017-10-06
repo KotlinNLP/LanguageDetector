@@ -9,7 +9,6 @@ package com.kotlinnlp.languagedetector.utils
 
 import com.kotlinnlp.neuraltokenizer.NeuralTokenizer
 import com.kotlinnlp.neuraltokenizer.NeuralTokenizerModel
-import java.io.File
 
 /**
  * A simple tokenizer which splits a text by spacing and pointing chars.
@@ -34,14 +33,15 @@ class TextTokenizer(cjkModel: NeuralTokenizerModel) {
   private val tokens = mutableListOf<String>()
 
   /**
-   *
+   * A set of the most frequent Chinese, Japanese and Korean characters.
    */
-  private val CJK_CHARS_FILENAME: String = this::class.java.getResource("/CJKChars.txt").file
-
-  /**
-   * A set of most frequent Chinese, Japanese and Korean characters.
-   */
-  private val cjkChars: Set<Char> = setOf(*File(this.CJK_CHARS_FILENAME).readLines().map { it[0] }.toTypedArray())
+  private val cjkChars: Set<Char> = setOf(
+    *this::class.java.getResource("/CJKChars.txt").readText()
+      .split("\n")
+      .filter { it.isNotEmpty() }
+      .map { it[0] }
+      .toTypedArray()
+  )
 
   /**
    * The [NeuralTokenizer] for Chinese, Japanese and Korean texts.
