@@ -31,6 +31,11 @@ class LanguageDetector(
   val frequencyDictionary: FrequencyDictionary? = null) {
 
   /**
+   *
+   */
+  data class TokenClassification(val languages: DenseNDArray, val charsImportance: DenseNDArray)
+
+  /**
    * The encoder of the input.
    */
   private val encoder = HANEncoder<DenseNDArray>(model = model.han)
@@ -91,11 +96,11 @@ class LanguageDetector(
    *
    * @param text the input text
    *
-   * @return a list of classifications (as [DenseNDArray]s) for each token as Pairs of <token, classification>
+   * @return the list of token classifications, as Pairs of <token, [TokenClassification]>
    */
-  fun classifyTokens(text: String): List<Pair<String, DenseNDArray>> {
+  fun classifyTokens(text: String): List<Pair<String, TokenClassification>> {
 
-    val tokensClassifications = mutableListOf<Pair<String, DenseNDArray>>()
+    val tokensClassifications = mutableListOf<Pair<String, TokenClassification>>()
 
     this.loopTokens(text).forEach { token ->
 
@@ -109,7 +114,12 @@ class LanguageDetector(
         }
       }
 
-      tokensClassifications.add(Pair(token, segmentClassification))
+      @Suppress("UNCHECKED_CAST")
+      val classification = TokenClassification(
+        languages = segmentClassification,
+        charsImportance = (this.encoder.getInputImportanceScores() as HierarchySequence<DenseNDArray>)[0])
+
+      tokensClassifications.add(Pair(token, classification))
     }
 
     return tokensClassifications.toList()
