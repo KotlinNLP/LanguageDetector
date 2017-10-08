@@ -47,16 +47,17 @@ class LanguageDetector(
    *
    * @return the detected [Language] for the given [text]
    */
-  fun detectLanguage(text: String): Language {
+  fun detectLanguage(text: String): Language = this.extractLanguage(prediction = this.predict(text))
 
-    val prediction: DenseNDArray = this.predict(text)
-
-    return if (prediction.sum() == 0.0) {
-      Language.Unknown
-    } else {
-      this.model.supportedLanguages[prediction.argMaxIndex()]
-    }
-  }
+  /**
+   * Extract the predicted [Language] from the given [prediction].
+   *
+   * @param prediction a prediction array of this [LanguageDetector], as output of the predict() method
+   *
+   * @return the predicted [Language]
+   */
+  fun extractLanguage(prediction: DenseNDArray): Language
+    = if (prediction.sum() == 0.0) Language.Unknown else this.model.supportedLanguages[prediction.argMaxIndex()]
 
   /**
    * Get the languages of the given [text] as probability distribution.
