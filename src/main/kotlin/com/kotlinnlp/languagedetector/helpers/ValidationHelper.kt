@@ -13,7 +13,7 @@ import com.kotlinnlp.languagedetector.utils.Language
 import com.kotlinnlp.simplednn.simplemath.ndarray.Shape
 import com.kotlinnlp.simplednn.simplemath.ndarray.dense.DenseNDArray
 import com.kotlinnlp.simplednn.simplemath.ndarray.dense.DenseNDArrayFactory
-import com.kotlinnlp.simplednn.utils.progressindicator.ProgressIndicatorBar
+import com.kotlinnlp.progressindicator.ProgressIndicatorBar
 
 /**
  * A helper for the validation of a [LanguageDetector].
