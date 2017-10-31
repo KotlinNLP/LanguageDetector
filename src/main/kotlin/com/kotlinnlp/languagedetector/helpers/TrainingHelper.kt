@@ -46,7 +46,7 @@ class TrainingHelper(
   /**
    * The min absolute value that an output error must have in order to be propagated.
    */
-  private val MIN_RELEVANT_ERROR: Double = 1.0e-03
+  private val minRelevantError: Double = 1.0e-03
 
   /**
    * When timing started.
@@ -74,7 +74,7 @@ class TrainingHelper(
    * The optimizer of the embeddings of the [languageDetector].
    */
   private val embeddingsOptimizer = EmbeddingsOptimizer(
-    embeddingsContainer = this.languageDetector.model.embeddings,
+    embeddingsMap = this.languageDetector.model.embeddings,
     updateMethod = embeddingsUpdateMethod)
 
   /**
@@ -87,6 +87,8 @@ class TrainingHelper(
   fun train(trainingSet: ArrayList<Example>,
             validationSet: ArrayList<Example>? = null,
             modelFilename: String? = null) {
+
+    this.initEmbeddings(trainingSet)
 
     (0 until this.epochs).forEach { i ->
 
@@ -103,6 +105,23 @@ class TrainingHelper(
 
       if (validationSet != null) {
         this.validateAndSaveModel(validationSet = validationSet, modelFilename = modelFilename)
+      }
+    }
+  }
+
+  /**
+   * Initialize the Embeddings of the [languageDetector] model, associating them to the chars contained in the given
+   * [trainingSet].
+   *
+   * @param trainingSet the dataset to train the [languageDetector]
+   */
+  private fun initEmbeddings(trainingSet: ArrayList<Example>) {
+
+    trainingSet.forEach { example ->
+      example.text.forEach { char ->
+        if (char !in this.languageDetector.model.embeddings) {
+          this.languageDetector.model.embeddings.set(key = char)
+        }
       }
     }
   }
@@ -183,7 +202,7 @@ class TrainingHelper(
    */
   private fun errorsAreRelevant(outputErrors: DenseNDArray): Boolean {
 
-    return (0 until outputErrors.length).any { i -> Math.abs(outputErrors[i]) > this.MIN_RELEVANT_ERROR }
+    return (0 until outputErrors.length).any { i -> Math.abs(outputErrors[i]) > this.minRelevantError }
   }
 
   /**
@@ -198,10 +217,7 @@ class TrainingHelper(
     val embeddingsErrors: ArrayList<DenseNDArray> = this.languageDetector.getInputSequenceErrors(copy = false)
 
     token.forEachIndexed { charIndex, char ->
-
-      val embedding = this.languageDetector.model.embeddings.getEmbedding(char.toString())
-
-      this.embeddingsOptimizer.accumulate(embeddingId = embedding.id, errors = embeddingsErrors[charIndex])
+      this.embeddingsOptimizer.accumulate(embeddingKey = char, errors = embeddingsErrors[charIndex])
     }
   }
 
