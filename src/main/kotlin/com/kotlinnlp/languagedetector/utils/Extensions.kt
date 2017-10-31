@@ -8,18 +8,18 @@
 package com.kotlinnlp.languagedetector.utils
 
 import com.kotlinnlp.simplednn.deeplearning.attentionnetwork.han.HierarchySequence
-import com.kotlinnlp.simplednn.deeplearning.embeddings.EmbeddingsContainerByStrings
+import com.kotlinnlp.simplednn.deeplearning.embeddings.EmbeddingsMap
 
 /**
  * Convert the [CharSequence] into a [HierarchySequence] of Embeddings as input of the HAN.
  *
- * @param embeddings the Embeddings container from which to extract Embeddings vector
+ * @param embeddings the map of chars to embeddings vectors
  * @param dropout the probability of dropout
  *
  * @return a HAN [HierarchySequence]
  */
-fun CharSequence.toHierarchySequence(embeddings: EmbeddingsContainerByStrings, dropout: Double = 0.0) =
+fun CharSequence.toHierarchySequence(embeddings: EmbeddingsMap<Char>, dropout: Double = 0.0) =
   HierarchySequence(*Array(
     size = this.length,
-    init = { charIndex -> embeddings.getEmbedding(this[charIndex].toString(), dropout = dropout).array.values }
+    init = { charIndex -> embeddings.get(this[charIndex], dropout = dropout).array.values }
   ))

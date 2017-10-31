@@ -13,7 +13,7 @@ import com.kotlinnlp.simplednn.core.functionalities.activations.Tanh
 import com.kotlinnlp.simplednn.core.layers.LayerType
 import com.kotlinnlp.simplednn.deeplearning.attentionnetwork.han.HAN
 import com.kotlinnlp.simplednn.deeplearning.attentionnetwork.han.HANParameters
-import com.kotlinnlp.simplednn.deeplearning.embeddings.EmbeddingsContainerByStrings
+import com.kotlinnlp.simplednn.deeplearning.embeddings.EmbeddingsMap
 import com.kotlinnlp.simplednn.utils.Serializer
 import java.io.*
 
@@ -59,9 +59,9 @@ class LanguageDetectorModel(
   val supportedLanguages: List<Language> = Language.values().slice(0 until Language.values().size - 1)
 
   /**
-   * The embeddings associated to each token.
+   * The map of chars to embeddings.
    */
-  val embeddings = EmbeddingsContainerByStrings(count = 1e05.toInt(), size = embeddingsSize).initialize()
+  val embeddings = EmbeddingsMap<Char>(size = embeddingsSize)
 
   /**
    * The [HAN] model.
