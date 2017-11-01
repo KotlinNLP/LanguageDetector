@@ -16,10 +16,13 @@ import java.io.File
 import java.io.FileInputStream
 
 /**
- * Execute an evaluation of a [LanguageDetector], loading its serialized model from the file given as first argument.
- * The second argument is the filename of the CJK NeuralTokenizer serialized model.
- * The third argument is the filename of the [FrequencyDictionary] serialized model.
- * The fourth argument is the filename of the test set.
+ * Execute an evaluation of a [LanguageDetector].
+ *
+ * Command line arguments:
+ *   1. The filename of the serialized model of the [LanguageDetector].
+ *   2. The filename of the CJK NeuralTokenizer serialized model.
+ *   3. The filename of the [FrequencyDictionary] serialized model.
+ *   4. The filename of the test dataset.
  */
 fun main(args: Array<String>) {
 

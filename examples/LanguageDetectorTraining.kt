@@ -22,11 +22,15 @@ import java.io.File
 import java.io.FileInputStream
 
 /**
- * Train and validate a LanguageDetector, using the datasets given as arguments.
- * The model is saved into the file given as first argument.
- * The second argument is the filename of the CJK NeuralTokenizer serialized model.
- * The third argument is the filename of the [FrequencyDictionary] serialized model.
- * The following arguments are the filenames of the training, validation and test datasets.
+ * Train and validate a [LanguageDetector].
+ *
+ * Command line arguments:
+ *   1. The name of the file in which to save the model.
+ *   2. The filename of the CJK NeuralTokenizer serialized model.
+ *   3. The filename of the [FrequencyDictionary] serialized model.
+ *   4. The filename of the training dataset.
+ *   5. The filename of the validation dataset.
+ *   6. The filename of the test dataset.
  */
 fun main(args: Array<String>) {
 
