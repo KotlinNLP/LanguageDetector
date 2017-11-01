@@ -92,7 +92,7 @@ class TrainingHelper(
 
     (0 until this.epochs).forEach { i ->
 
-      println("\nEpoch ${i + 1}")
+      println("\nEpoch ${i + 1} of $epochs")
 
       this.startTiming()
 
