@@ -75,7 +75,7 @@ class LanguageDetectorModel(
     outputActivation = Softmax(),
     biRNNsActivation = Tanh(),
     biRNNsConnectionType = recurrentConnectionType,
-    compressionFactors = arrayOf(this.hiddenSize.toDouble() / this.embeddingsSize))
+    gainFactors = arrayOf(this.hiddenSize.toDouble() / this.embeddingsSize))
 
   /**
    * The parameters of the model.
