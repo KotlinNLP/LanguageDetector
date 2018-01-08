@@ -7,6 +7,15 @@ LanguageDetector is part of [KotlinNLP](http://kotlinnlp.com/ "KotlinNLP").
 
 ## Getting Started
 
+### Import with Maven
+
+```xml
+<dependency>
+    <groupId>com.kotlinnlp</groupId>
+    <artifactId>languagedetector</artifactId>
+    <version>0.1.0</version>
+</dependency>
+```
 
 ### Examples
 
@@ -14,7 +23,6 @@ Try some examples of usage of LanguageDetector running the files in the `example
 
 To run the examples you need datasets of test and training that you can find
 [here](https://www.dropbox.com/ "LanguageDetector examples datasets")
-
 
 ### Model Serialization
 
