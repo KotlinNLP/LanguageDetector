@@ -17,10 +17,13 @@ import com.kotlinnlp.neuraltokenizer.NeuralTokenizerModel
  */
 class TextTokenizer(cjkModel: NeuralTokenizerModel) {
 
-  /**
-   * The min percentage of chars that a token must have to be considered Chinese, Japanese or Korean
-   */
-  private val MIN_CJK_CHARS_PERCENTAGE = 0.40
+  companion object {
+
+    /**
+     * The min percentage of chars that a token must have to be considered Chinese, Japanese or Korean
+     */
+    private const val MIN_CJK_CHARS_PERCENTAGE = 0.40
+  }
 
   /**
    * The currently buffered token.
@@ -145,8 +148,8 @@ class TextTokenizer(cjkModel: NeuralTokenizerModel) {
    */
   private fun String.isCJK(): Boolean {
 
-    val CJKCharsCount = this.sumBy { if (it in this@TextTokenizer.cjkChars) 1 else 0 }
+    val cjkCharsCount = this.sumBy { if (it in this@TextTokenizer.cjkChars) 1 else 0 }
 
-    return (CJKCharsCount.toDouble() / this.length) >= this@TextTokenizer.MIN_CJK_CHARS_PERCENTAGE
+    return (cjkCharsCount.toDouble() / this.length) >= MIN_CJK_CHARS_PERCENTAGE
   }
 }
