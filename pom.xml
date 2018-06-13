@@ -61,7 +61,7 @@
         <spek.version>1.1.5</spek.version>
         <dokka.version>0.9.16</dokka.version>
         <klaxon.version>0.30</klaxon.version>
-        <progressindicator.version>1.0.0</progressindicator.version>
+        <utils.version>2.1.0</utils.version>
         <simplednn.version>0.1.0</simplednn.version>
         <neuraltokenizer.version>0.1.0</neuraltokenizer.version>
     </properties>
@@ -248,8 +248,8 @@
 
         <dependency>
             <groupId>com.kotlinnlp</groupId>
-            <artifactId>progressindicator</artifactId>
-            <version>${progressindicator.version}</version>
+            <artifactId>utils</artifactId>
+            <version>${utils.version}</version>
         </dependency>
 
         <dependency>
