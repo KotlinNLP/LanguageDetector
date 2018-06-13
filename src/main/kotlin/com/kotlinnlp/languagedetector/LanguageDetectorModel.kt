@@ -11,10 +11,10 @@ import com.kotlinnlp.languagedetector.utils.Language
 import com.kotlinnlp.simplednn.core.functionalities.activations.Softmax
 import com.kotlinnlp.simplednn.core.functionalities.activations.Tanh
 import com.kotlinnlp.simplednn.core.layers.LayerType
-import com.kotlinnlp.simplednn.deeplearning.attentionnetwork.han.HAN
-import com.kotlinnlp.simplednn.deeplearning.attentionnetwork.han.HANParameters
-import com.kotlinnlp.simplednn.deeplearning.embeddings.EmbeddingsMap
-import com.kotlinnlp.simplednn.utils.Serializer
+import com.kotlinnlp.simplednn.deeplearning.attention.han.HAN
+import com.kotlinnlp.simplednn.deeplearning.attention.han.HANParameters
+import com.kotlinnlp.simplednn.core.embeddings.EmbeddingsMap
+import com.kotlinnlp.utils.Serializer
 import java.io.*
 
 /**
@@ -75,7 +75,7 @@ class LanguageDetectorModel(
     outputActivation = Softmax(),
     biRNNsActivation = Tanh(),
     biRNNsConnectionType = recurrentConnectionType,
-    gainFactors = arrayOf(this.hiddenSize.toDouble() / this.embeddingsSize))
+    gainFactors = listOf(this.hiddenSize.toDouble() / this.embeddingsSize))
 
   /**
    * The parameters of the model.

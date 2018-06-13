@@ -9,13 +9,13 @@ package com.kotlinnlp.languagedetector.helpers
 
 import com.kotlinnlp.languagedetector.LanguageDetector
 import com.kotlinnlp.languagedetector.dataset.Example
+import com.kotlinnlp.simplednn.core.embeddings.EmbeddingsOptimizer
 import com.kotlinnlp.simplednn.core.functionalities.updatemethods.UpdateMethod
 import com.kotlinnlp.simplednn.core.functionalities.updatemethods.adagrad.AdaGradMethod
 import com.kotlinnlp.simplednn.core.functionalities.updatemethods.adam.ADAMMethod
 import com.kotlinnlp.simplednn.core.optimizer.ParamsOptimizer
 import com.kotlinnlp.simplednn.dataset.Shuffler
-import com.kotlinnlp.simplednn.deeplearning.attentionnetwork.han.HANParameters
-import com.kotlinnlp.simplednn.deeplearning.embeddings.EmbeddingsOptimizer
+import com.kotlinnlp.simplednn.deeplearning.attention.han.HANParameters
 import com.kotlinnlp.simplednn.helpers.training.utils.ExamplesIndices
 import com.kotlinnlp.simplednn.simplemath.ndarray.dense.DenseNDArray
 import com.kotlinnlp.utils.progressindicator.ProgressIndicatorBar

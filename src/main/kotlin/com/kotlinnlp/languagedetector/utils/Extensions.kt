@@ -7,8 +7,8 @@
 
 package com.kotlinnlp.languagedetector.utils
 
-import com.kotlinnlp.simplednn.deeplearning.attentionnetwork.han.HierarchySequence
-import com.kotlinnlp.simplednn.deeplearning.embeddings.EmbeddingsMap
+import com.kotlinnlp.simplednn.core.embeddings.EmbeddingsMap
+import com.kotlinnlp.simplednn.deeplearning.attention.han.HierarchySequence
 
 /**
  * Convert the [CharSequence] into a [HierarchySequence] of Embeddings as input of the HAN.

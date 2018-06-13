@@ -8,9 +8,9 @@
 package com.kotlinnlp.languagedetector
 
 import com.kotlinnlp.languagedetector.utils.*
-import com.kotlinnlp.simplednn.deeplearning.attentionnetwork.han.HANEncoder
-import com.kotlinnlp.simplednn.deeplearning.attentionnetwork.han.HANParameters
-import com.kotlinnlp.simplednn.deeplearning.attentionnetwork.han.HierarchySequence
+import com.kotlinnlp.simplednn.deeplearning.attention.han.HANEncoder
+import com.kotlinnlp.simplednn.deeplearning.attention.han.HANParameters
+import com.kotlinnlp.simplednn.deeplearning.attention.han.HierarchySequence
 import com.kotlinnlp.simplednn.simplemath.ndarray.Shape
 import com.kotlinnlp.simplednn.simplemath.ndarray.dense.DenseNDArray
 import com.kotlinnlp.simplednn.simplemath.ndarray.dense.DenseNDArrayFactory

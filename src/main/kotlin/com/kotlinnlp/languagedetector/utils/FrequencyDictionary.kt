@@ -10,7 +10,7 @@ package com.kotlinnlp.languagedetector.utils
 import com.kotlinnlp.simplednn.simplemath.ndarray.Shape
 import com.kotlinnlp.simplednn.simplemath.ndarray.dense.DenseNDArray
 import com.kotlinnlp.simplednn.simplemath.ndarray.dense.DenseNDArrayFactory
-import com.kotlinnlp.simplednn.utils.Serializer
+import com.kotlinnlp.utils.Serializer
 import java.io.InputStream
 import java.io.OutputStream
 import java.io.Serializable
