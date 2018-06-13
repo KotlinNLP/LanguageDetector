@@ -166,7 +166,7 @@ class TrainingHelper(
    */
   private fun learnFromExample(example: Example) {
 
-    this.languageDetector.loopTokens(example.text).forEach { token ->
+    this.languageDetector.forEachToken(example.text) { token ->
 
       val output: DenseNDArray = this.languageDetector.forward(token, dropout = this.dropout)
       val goldClassIndex: Int = example.language.id

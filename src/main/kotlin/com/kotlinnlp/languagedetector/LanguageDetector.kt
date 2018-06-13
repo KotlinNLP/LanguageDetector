@@ -15,7 +15,6 @@ import com.kotlinnlp.simplednn.simplemath.ndarray.Shape
 import com.kotlinnlp.simplednn.simplemath.ndarray.dense.DenseNDArray
 import com.kotlinnlp.simplednn.simplemath.ndarray.dense.DenseNDArrayFactory
 import java.util.*
-import kotlin.coroutines.experimental.buildSequence
 
 /**
  * A language detector based on Hierarchic Attention Networks.
@@ -70,7 +69,7 @@ class LanguageDetector(
 
     val classifications = mutableListOf<DenseNDArray>()
 
-    this.loopTokens(text).forEach { token ->
+    this.forEachToken(text) { token ->
 
       val tokenClassification = this.forward(token)
 
@@ -103,7 +102,7 @@ class LanguageDetector(
 
     val tokensClassifications = mutableListOf<Pair<String, TokenClassification>>()
 
-    this.loopTokens(text).forEach { token ->
+    this.forEachToken(text) { token ->
 
       var segmentClassification = this.forward(token)
 
@@ -124,17 +123,6 @@ class LanguageDetector(
     }
 
     return tokensClassifications.toList()
-  }
-
-  /**
-   * Tokenize the given [text] and yield its tokens.
-   *
-   * @param text the input text
-   */
-  fun loopTokens(text: String) = buildSequence {
-
-    this@LanguageDetector.tokenizer.tokenize(text, maxTokensLength = this@LanguageDetector.model.maxTokensLength)
-      .forEach { token -> yield(token) }
   }
 
   /**
@@ -175,6 +163,18 @@ class LanguageDetector(
   fun getInputSequenceErrors(copy: Boolean = true): ArrayList<DenseNDArray> {
     @Suppress("UNCHECKED_CAST")
     return this.encoder.getInputSequenceErrors(copy = copy) as HierarchySequence<DenseNDArray>
+  }
+
+  /**
+   * Tokenize the given [text] and yield its tokens.
+   *
+   * @param text the input text
+   * @param callback a callback called for each token, passing it as argument
+   */
+  internal fun forEachToken(text: String, callback: (String) -> Unit) {
+
+    this@LanguageDetector.tokenizer.tokenize(text, maxTokensLength = this@LanguageDetector.model.maxTokensLength)
+      .forEach { token -> callback(token) }
   }
 
   /**
