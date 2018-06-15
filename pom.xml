@@ -63,8 +63,8 @@
         <dokka.version>0.9.16</dokka.version>
         <klaxon.version>0.30</klaxon.version>
         <utils.version>2.1.0</utils.version>
-        <simplednn.version>0.9.1</simplednn.version>
-        <neuraltokenizer.version>0.2.0</neuraltokenizer.version>
+        <simplednn.version>0.9.2</simplednn.version>
+        <neuraltokenizer.version>0.2.1</neuraltokenizer.version>
     </properties>
 
     <repositories>
