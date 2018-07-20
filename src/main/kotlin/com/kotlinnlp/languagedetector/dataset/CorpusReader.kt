@@ -9,9 +9,7 @@ package com.kotlinnlp.languagedetector.dataset
 
 import com.beust.klaxon.*
 import com.kotlinnlp.languagedetector.utils.Language
-import java.io.ByteArrayInputStream
 import java.io.File
-import java.io.InputStream
 
 /**
  * The helper to read a corpus from file.
@@ -52,7 +50,7 @@ class CorpusReader {
 
       if (maxLines == null || count++ < maxLines) {
 
-        val parsedExample = parser.parse(line.toInputStream()) as JsonObject
+        val parsedExample = parser.parse(StringBuilder(line)) as JsonObject
 
         examples.add(Example(
           text = parsedExample.string("body")!!,
@@ -81,9 +79,4 @@ class CorpusReader {
       Language.Unknown
     }
   }
-
-  /**
-   * @return this [String] converted to an [InputStream]
-   */
-  private fun String.toInputStream(): InputStream = ByteArrayInputStream(this.toByteArray())
 }
