@@ -14,7 +14,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven-assembly-plugin.version>2.6</maven-assembly-plugin.version>
         <kotlin.version>1.2.41</kotlin.version>
-        <languagedetector.version>0.2.1</languagedetector.version>
+        <languagedetector.version>0.3.0</languagedetector.version>
         <neuraltokenizer.version>0.3.0</neuraltokenizer.version>
         <simplednn.version>0.11.0</simplednn.version>
         <utils.version>2.1.0</utils.version>
