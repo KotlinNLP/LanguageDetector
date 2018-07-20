@@ -27,7 +27,8 @@ import java.util.*
 class LanguageDetector(
   val model: LanguageDetectorModel,
   val tokenizer: TextTokenizer,
-  val frequencyDictionary: FrequencyDictionary? = null) {
+  val frequencyDictionary: FrequencyDictionary? = null
+) {
 
   /**
    *
@@ -37,7 +38,7 @@ class LanguageDetector(
   /**
    * The encoder of the input.
    */
-  private val encoder = HANEncoder<DenseNDArray>(model = model.han)
+  private val encoder = HANEncoder<DenseNDArray>(model = model.han, useDropout = false, propagateToInput = true)
 
   /**
    * Detect the [Language] of the given [text].
@@ -145,7 +146,7 @@ class LanguageDetector(
    * @param outputErrors the errors of the output
    */
   fun backward(outputErrors: DenseNDArray) {
-    this.encoder.backward(outputErrors = outputErrors, propagateToInput = true)
+    this.encoder.backward(outputErrors = outputErrors)
   }
 
   /**
@@ -162,7 +163,7 @@ class LanguageDetector(
    */
   fun getInputSequenceErrors(copy: Boolean = true): ArrayList<DenseNDArray> {
     @Suppress("UNCHECKED_CAST")
-    return this.encoder.getInputSequenceErrors(copy = copy) as HierarchySequence<DenseNDArray>
+    return this.encoder.getInputErrors(copy = copy) as HierarchySequence<DenseNDArray>
   }
 
   /**
