@@ -72,7 +72,7 @@ class LanguageDetector(
 
     this.forEachToken(text) { token ->
 
-      val tokenClassification = this.forward(token)
+      val tokenClassification = this.classifyToken(token)
 
       classifications.add(tokenClassification)
 
@@ -105,7 +105,7 @@ class LanguageDetector(
 
     this.forEachToken(text) { token ->
 
-      var segmentClassification = this.forward(token)
+      var segmentClassification = this.classifyToken(token)
 
       if (this.frequencyDictionary != null) {
         val tokenFreq: DenseNDArray? = this.frequencyDictionary.getFreqOf(token)
@@ -127,14 +127,14 @@ class LanguageDetector(
   }
 
   /**
-   * Forward the internal classifier given a token.
+   * Classify the language of a single token.
    *
    * @param token the word to classify (classes are all supported languages)
    * @param dropout the probability of dropout of the Embeddings
    *
    * @return a [DenseNDArray] containing the languages classification of the [token]
    */
-  fun forward(token: String, dropout: Double = 0.0): DenseNDArray {
+  fun classifyToken(token: String, dropout: Double = 0.0): DenseNDArray {
     require(token.isNotEmpty()) { "Empty chars sequence" }
 
     return this.encoder.forward(token.toHierarchySequence(this.model.embeddings, dropout = dropout))

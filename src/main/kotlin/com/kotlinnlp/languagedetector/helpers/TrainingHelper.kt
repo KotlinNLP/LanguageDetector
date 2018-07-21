@@ -168,7 +168,7 @@ class TrainingHelper(
 
     this.languageDetector.forEachToken(example.text) { token ->
 
-      val output: DenseNDArray = this.languageDetector.forward(token, dropout = this.dropout)
+      val output: DenseNDArray = this.languageDetector.classifyToken(token, dropout = this.dropout)
       val goldClassIndex: Int = example.language.id
 
       val outputErrors = this.buildErrors(outputArray = output, goldClassIndex = goldClassIndex)
