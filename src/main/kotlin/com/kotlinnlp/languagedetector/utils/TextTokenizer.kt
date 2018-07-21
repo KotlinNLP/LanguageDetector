@@ -51,7 +51,7 @@ class TextTokenizer(cjkModel: NeuralTokenizerModel) {
    */
   private val cjkNeuralTokenizer = NeuralTokenizer(
     model = cjkModel,
-    useDropout = false // do not use the dropout
+    useDropout = false // the dropout should be enabled only for training purpose
   )
 
   /**
