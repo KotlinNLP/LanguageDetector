@@ -140,7 +140,7 @@ class LanguageDetector(
   fun classifyToken(token: String, dropout: Double = 0.0): DenseNDArray {
     require(token.isNotEmpty()) { "Empty chars sequence" }
 
-    return this.encoder.forward(token.toHierarchySequence(this.model.embeddings, dropout = dropout))
+    return this.encoder.forward(token.toHierarchySequence(this.model.embeddings, dropout = dropout)).copy()
   }
 
   /**
