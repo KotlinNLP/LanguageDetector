@@ -145,7 +145,6 @@ class TrainingHelper(
       this.optimizer.newExample()
       this.embeddingsOptimizer.newExample()
 
-
       this.learnFromExample(example = trainingSet[exampleIndex])
 
       if ((exampleIndex + 1) % this.batchSize == 0 || exampleIndex == trainingSet.lastIndex) {
