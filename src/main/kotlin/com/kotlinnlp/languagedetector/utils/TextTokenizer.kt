@@ -49,10 +49,7 @@ class TextTokenizer(cjkModel: NeuralTokenizerModel) {
   /**
    * The [NeuralTokenizer] for Chinese, Japanese and Korean texts.
    */
-  private val cjkNeuralTokenizer = NeuralTokenizer(
-    model = cjkModel,
-    useDropout = false // the dropout should be enabled only for training purpose
-  )
+  private val cjkNeuralTokenizer = NeuralTokenizer(cjkModel)
 
   /**
    * Tokenize a text by spacing an punctuation chars.
