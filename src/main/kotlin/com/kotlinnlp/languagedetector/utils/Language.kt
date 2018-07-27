@@ -10,6 +10,9 @@ package com.kotlinnlp.languagedetector.utils
 /**
  * Enum class containing the supported languages.
  * The last is the Unknown language.
+ *
+ * @property id a unique id of the language
+ * @property isoCode the ISO 639-1 code of the language
  */
 enum class Language(val id: Int, val isoCode: String) {
   Arabic(0, "ar"),
