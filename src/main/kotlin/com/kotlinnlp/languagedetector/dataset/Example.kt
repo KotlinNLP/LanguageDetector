@@ -7,7 +7,7 @@
 
 package com.kotlinnlp.languagedetector.dataset
 
-import com.kotlinnlp.linguisticdescription.Language
+import com.kotlinnlp.linguisticdescription.language.Language
 
 /**
  * An example to train or test a LanguageDetector.

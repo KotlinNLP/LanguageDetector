@@ -7,7 +7,7 @@
 
 package com.kotlinnlp.languagedetector.utils
 
-import com.kotlinnlp.linguisticdescription.Language
+import com.kotlinnlp.linguisticdescription.language.Language
 import com.kotlinnlp.simplednn.simplemath.ndarray.Shape
 import com.kotlinnlp.simplednn.simplemath.ndarray.dense.DenseNDArray
 import com.kotlinnlp.simplednn.simplemath.ndarray.dense.DenseNDArrayFactory

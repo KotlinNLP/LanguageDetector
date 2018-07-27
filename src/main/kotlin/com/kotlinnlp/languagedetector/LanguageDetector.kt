@@ -8,7 +8,7 @@
 package com.kotlinnlp.languagedetector
 
 import com.kotlinnlp.languagedetector.utils.*
-import com.kotlinnlp.linguisticdescription.Language
+import com.kotlinnlp.linguisticdescription.language.Language
 import com.kotlinnlp.simplednn.deeplearning.attention.han.HANEncoder
 import com.kotlinnlp.simplednn.deeplearning.attention.han.HANParameters
 import com.kotlinnlp.simplednn.deeplearning.attention.han.HierarchySequence
