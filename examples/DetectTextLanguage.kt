@@ -8,7 +8,7 @@
 import com.kotlinnlp.languagedetector.LanguageDetector
 import com.kotlinnlp.languagedetector.LanguageDetectorModel
 import com.kotlinnlp.languagedetector.utils.FrequencyDictionary
-import com.kotlinnlp.languagedetector.utils.Language
+import com.kotlinnlp.linguisticdescription.Language
 import com.kotlinnlp.languagedetector.utils.TextTokenizer
 import com.kotlinnlp.neuraltokenizer.NeuralTokenizerModel
 import java.io.File

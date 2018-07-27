@@ -8,7 +8,7 @@
 package com.kotlinnlp.languagedetector.dataset
 
 import com.beust.klaxon.*
-import com.kotlinnlp.languagedetector.utils.Language
+import com.kotlinnlp.linguisticdescription.Language
 import java.io.File
 
 /**

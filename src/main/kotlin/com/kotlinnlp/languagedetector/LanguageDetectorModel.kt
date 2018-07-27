@@ -7,7 +7,7 @@
 
 package com.kotlinnlp.languagedetector
 
-import com.kotlinnlp.languagedetector.utils.Language
+import com.kotlinnlp.linguisticdescription.Language
 import com.kotlinnlp.simplednn.core.functionalities.activations.Softmax
 import com.kotlinnlp.simplednn.core.functionalities.activations.Tanh
 import com.kotlinnlp.simplednn.core.layers.LayerType
