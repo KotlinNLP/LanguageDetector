@@ -19,9 +19,10 @@ import java.io.FileOutputStream
  * Save the words frequency per language into a [FrequencyDictionary] reading them from a dataset and save the
  * serialized model of the dictionary to file.
  *
- * The first argument is the serialized model of the NeuralTokenizer for Chinese, Japanese and Korean texts.
- * The second argument is the filename of the input dataset.
- * The third argument is the output filename of the serialized model of the dictionary.
+ * Command line arguments: *
+ *  1. The serialized model of the NeuralTokenizer for Chinese, Japanese and Korean texts.
+ *  2. The filename of the input dataset.
+ *  3. The output filename of the serialized model of the dictionary.
  */
 fun main(args: Array<String>) {
 
