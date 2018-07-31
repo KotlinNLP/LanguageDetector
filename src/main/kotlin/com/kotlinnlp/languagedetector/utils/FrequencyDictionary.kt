@@ -74,15 +74,16 @@ class FrequencyDictionary: Serializable {
    * @param language the [Language] associated to the [word]
    */
   fun addOccurrence(word: String, language: Language) {
-    require(!this.normalized) { "Cannot add a word occurrence after normalization" }
+
+    require(!this.normalized) { "Cannot add a word occurrence after normalization." }
 
     val lowerCaseWord = word.toLowerCase()
 
-    if (lowerCaseWord !in freqMap) {
-      freqMap[lowerCaseWord] = DenseNDArrayFactory.zeros(Shape(this.supportedLanguagesSize))
+    if (lowerCaseWord !in this.freqMap) {
+      this.freqMap[lowerCaseWord] = DenseNDArrayFactory.zeros(Shape(this.supportedLanguagesSize))
     }
 
-    val wordFreq: DenseNDArray = freqMap[lowerCaseWord]!!
+    val wordFreq: DenseNDArray = this.freqMap[lowerCaseWord]!!
 
     wordFreq[language.id] = wordFreq[language.id] + 1
     this.wordCountsPerLanguage[language.id]++
@@ -93,7 +94,11 @@ class FrequencyDictionary: Serializable {
    */
   fun normalize() {
 
-    val eps: Double = 1.0 / this.freqMap.values.sumBy { it.sum().toInt() }
+    val eps: Double = 1.0 / this.freqMap.values.sumByDouble { it.sum() }
+
+    (0 until this.wordCountsPerLanguage.length).forEach { i ->
+      if (this.wordCountsPerLanguage[i] < eps) this.wordCountsPerLanguage[i] = eps
+    }
 
     this.freqMap.forEach { _, freqArray -> freqArray.normalizePerLanguage(zerosReplace = eps) }
 
