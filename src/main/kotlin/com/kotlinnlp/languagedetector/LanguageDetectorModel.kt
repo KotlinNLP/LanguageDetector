@@ -56,7 +56,7 @@ class LanguageDetectorModel(
    * The list of all supported languages (the index of a [Language] is equal to its id).
    * The Unknown language is excluded.
    */
-  val supportedLanguages: List<Language> = Language.values().slice(0 until Language.values().size - 1)
+  val supportedLanguages: List<Language> = Language.values().filter { it != Language.Unknown }.sortedBy { it.id }
 
   /**
    * The map of chars to embeddings.

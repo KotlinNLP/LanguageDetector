@@ -19,20 +19,8 @@ class CorpusReader {
   /**
    * All supported languages mapped to their iso-code (Unknown excluded).
    */
-  private val supportedLanguages: Map<String, Language>
-
-  /**
-   * Initialize supported languages map.
-   */
-  init {
-
-    val languages: List<Language> = Language.values().slice(0 until Language.values().size - 1) // Unknown excluded
-
-    this.supportedLanguages = mapOf(*Array(
-      size = languages.size,
-      init = { i -> Pair(languages[i].isoCode, languages[i]) }
-    ))
-  }
+  private val supportedLanguages: Map<String, Language> =
+    Language.values().filter { it != Language.Unknown }.associateBy { it.isoCode }
 
   /**
    * Read the given JSONL corpus [file] by lines.
