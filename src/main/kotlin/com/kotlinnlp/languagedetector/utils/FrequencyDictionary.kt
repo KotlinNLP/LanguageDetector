@@ -47,7 +47,7 @@ class FrequencyDictionary: Serializable {
   /**
    * The number of supported languages.
    */
-  private val supportedLanguagesSize: Int = Language.values().size - 1
+  private val supportedLanguagesSize: Int = Language.values().size - 1 // Unknown excluded
 
   /**
    * Map each word to its languages frequency.
