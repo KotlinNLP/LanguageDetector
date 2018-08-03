@@ -1,6 +1,6 @@
 # LanguageDetector [![GitHub version](https://badge.fury.io/gh/KotlinNLP%2FLanguageDetector.svg)](https://badge.fury.io/gh/KotlinNLP%2FLanguageDetector) [![Build Status](https://travis-ci.org/KotlinNLP/LanguageDetector.svg?branch=master)](https://travis-ci.org/KotlinNLP/LanguageDetector)
 
-LanguageDetector is a very simple to use text language detector which uses the Hierarchical Attention Networks (HAN) from the [SimpleDNN](https://github.com/nlpstep/simplednn "SimpleDNN") library.
+LanguageDetector is a very simple to use text language detector which uses the Hierarchical Attention Networks (HAN) from the [SimpleDNN](https://github.com/KotlinNLP/SimpleDNN "SimpleDNN") library.
 
 LanguageDetector is part of [KotlinNLP](http://kotlinnlp.com/ "KotlinNLP").
 
@@ -38,4 +38,4 @@ This software is released under the terms of the
 ## Contributions
 
 We greatly appreciate any bug reports and contributions, which can be made by filing an issue or making a pull 
-request through the [github page](https://github.com/nlpstep/LanguageDetector "LanguageDetector on GitHub").
+request through the [github page](https://github.com/KotlinNLP/LanguageDetector "LanguageDetector on GitHub").
