@@ -14,6 +14,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven-assembly-plugin.version>2.6</maven-assembly-plugin.version>
         <kotlin.version>1.2.41</kotlin.version>
+        <xenocom.version>0.0.5</xenocom.version>
+        <argparser.version>2.0.7</argparser.version>
         <languagedetector.version>0.4.4</languagedetector.version>
         <neuraltokenizer.version>0.4.2</neuraltokenizer.version>
         <linguisticdescription.version>0.10.0</linguisticdescription.version>
@@ -113,6 +115,18 @@
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-reflect</artifactId>
             <version>${kotlin.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.xenomachina</groupId>
+            <artifactId>xenocom</artifactId>
+            <version>${xenocom.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.xenomachina</groupId>
+            <artifactId>kotlin-argparser</artifactId>
+            <version>${argparser.version}</version>
         </dependency>
 
         <dependency>
