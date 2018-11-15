@@ -14,10 +14,10 @@ import com.kotlinnlp.simplednn.core.functionalities.updatemethods.UpdateMethod
 import com.kotlinnlp.simplednn.core.functionalities.updatemethods.adagrad.AdaGradMethod
 import com.kotlinnlp.simplednn.core.functionalities.updatemethods.adam.ADAMMethod
 import com.kotlinnlp.simplednn.core.optimizer.ParamsOptimizer
-import com.kotlinnlp.simplednn.dataset.Shuffler
 import com.kotlinnlp.simplednn.deeplearning.attention.han.HANParameters
-import com.kotlinnlp.simplednn.helpers.training.utils.ExamplesIndices
 import com.kotlinnlp.simplednn.simplemath.ndarray.dense.DenseNDArray
+import com.kotlinnlp.utils.ExamplesIndices
+import com.kotlinnlp.utils.Shuffler
 import com.kotlinnlp.utils.progressindicator.ProgressIndicatorBar
 import java.io.File
 import java.io.FileOutputStream
