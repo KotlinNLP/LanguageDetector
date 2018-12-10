@@ -51,5 +51,5 @@ fun main(args: Array<String>) {
   println()
   println("Confusion matrix:")
   println()
-  println(helper.getFormattedConfusionMatrix())
+  println(helper.confusionMatrix)
 }

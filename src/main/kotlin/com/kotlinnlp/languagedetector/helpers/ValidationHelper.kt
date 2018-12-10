@@ -10,9 +10,7 @@ package com.kotlinnlp.languagedetector.helpers
 import com.kotlinnlp.languagedetector.LanguageDetector
 import com.kotlinnlp.languagedetector.dataset.Example
 import com.kotlinnlp.linguisticdescription.language.Language
-import com.kotlinnlp.simplednn.simplemath.ndarray.Shape
-import com.kotlinnlp.simplednn.simplemath.ndarray.dense.DenseNDArray
-import com.kotlinnlp.simplednn.simplemath.ndarray.dense.DenseNDArrayFactory
+import com.kotlinnlp.utils.ConfusionMatrix
 import com.kotlinnlp.utils.progressindicator.ProgressIndicatorBar
 
 /**
@@ -23,9 +21,7 @@ class ValidationHelper(private val languageDetector: LanguageDetector) {
   /**
    * The confusion matrix of the predictions.
    */
-  private val confusionMatrix: DenseNDArray = DenseNDArrayFactory.zeros(
-    Shape(this.languageDetector.model.supportedLanguages.size, this.languageDetector.model.supportedLanguages.size)
-  )
+  val confusionMatrix = ConfusionMatrix(this.languageDetector.model.supportedLanguages.map { it.isoCode })
 
   /**
    * When timing started.
@@ -49,7 +45,7 @@ class ValidationHelper(private val languageDetector: LanguageDetector) {
 
     this.startTiming()
 
-    this.confusionMatrix.zeros()
+    this.confusionMatrix.reset()
 
     testSet.forEach { example ->
 
@@ -70,39 +66,6 @@ class ValidationHelper(private val languageDetector: LanguageDetector) {
   }
 
   /**
-   * @return the confusion matrix of the last validation, formatted as [String]
-   */
-  fun getFormattedConfusionMatrix(): String {
-
-    val languages = this.languageDetector.model.supportedLanguages
-
-    var res = languages.joinToString(
-      prefix = "    | ",
-      transform = { lang -> "  %s  ".format(lang.isoCode) },
-      separator = " | ",
-      postfix = " \n")
-
-    res += (0 until 9 * languages.size + 3).joinToString(transform = { "-" }, separator = "")
-    res += "\n"
-
-    res += (0 until this.confusionMatrix.shape.dim1).joinToString(
-      transform = { i ->
-        val row: DenseNDArray = this.confusionMatrix.getRow(i)
-        val rowSum: Double = row.sum()
-        val normRow: DenseNDArray = if (rowSum > 0.0) row.assignDiv(rowSum) else row
-
-        (0 until this.confusionMatrix.shape.dim2).joinToString(
-          prefix = " %s | ".format(languages[i].isoCode),
-          transform = { j -> "%5.1f%%".format(100.0 * normRow[j]) },
-          separator = " | ",
-          postfix = " \n")
-      },
-      separator = "")
-
-    return res
-  }
-
-  /**
    * Validate the [languageDetector] with the given [example].
    *
    * @param example an example of the validation dataset
@@ -113,13 +76,8 @@ class ValidationHelper(private val languageDetector: LanguageDetector) {
 
     val predictedLang: Language = this.languageDetector.detectLanguage(example.text)
 
-    if (predictedLang != Language.Unknown) {
-
-      val row: Int = example.language.id
-      val col: Int = predictedLang.id
-
-      this.confusionMatrix[row, col] = this.confusionMatrix[row, col] + 1.0
-    }
+    if (predictedLang != Language.Unknown)
+      this.confusionMatrix.increment(expected = example.language.id, found = predictedLang.id)
 
     return if (predictedLang == example.language) 1 else 0
   }
