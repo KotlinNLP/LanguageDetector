@@ -12,6 +12,7 @@ import com.kotlinnlp.linguisticdescription.language.Language
 import com.kotlinnlp.simplednn.deeplearning.attention.han.HANEncoder
 import com.kotlinnlp.simplednn.deeplearning.attention.han.HANParameters
 import com.kotlinnlp.simplednn.deeplearning.attention.han.HierarchySequence
+import com.kotlinnlp.simplednn.simplemath.exp
 import com.kotlinnlp.simplednn.simplemath.ndarray.Shape
 import com.kotlinnlp.simplednn.simplemath.ndarray.dense.DenseNDArray
 import com.kotlinnlp.simplednn.simplemath.ndarray.dense.DenseNDArrayFactory
@@ -183,8 +184,8 @@ class LanguageDetector(
   }
 
   /**
-   * Combine classifications of more tokens in a single one by multiplying them element-wise and normalizing respect
-   * of the sum, returning a conditional probability.
+   * Combine classifications of more tokens in a single one by making their logarithmic sum and returning a normalized
+   * conditional probability.
    *
    * @param classifications an [ArrayList] of classifications (one for each text segment)
    *
@@ -192,10 +193,13 @@ class LanguageDetector(
    */
   private fun combineClassifications(classifications: List<DenseNDArray>): DenseNDArray {
 
-    val combinedClassification: DenseNDArray = classifications[0].copy()
+    val logSum: DenseNDArray = classifications[0].ln()
 
-    (1 until classifications.size).forEach { i -> combinedClassification.assignProd(classifications[i]) }
+    classifications.subList(1, classifications.size).forEach { logSum.assignSum(it.ln()) }
 
-    return combinedClassification.assignDiv(combinedClassification.sum()) // normalization
+    val logSumNorm: DenseNDArray = logSum.assignSub(logSum.max())
+    val linearSumNorm: DenseNDArray = exp(logSumNorm)
+
+    return linearSumNorm.assignDiv(linearSumNorm.sum())
   }
 }
