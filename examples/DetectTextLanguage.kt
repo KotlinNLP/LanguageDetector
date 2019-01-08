@@ -16,20 +16,28 @@ import java.io.FileInputStream
 
 /**
  * Detect the language of a text.
- * The first argument is the filename of the [LanguageDetector] serialized model.
- * The second argument is the filename of the CJK NeuralTokenizer serialized model.
- * The third argument is the filename of the [FrequencyDictionary] serialized model.
+ *
+ * Command line arguments:
+ *  1. The filename of the [LanguageDetector] serialized model.
+ *  2. The filename of the CJK NeuralTokenizer serialized model.
+ *  3. The filename of the [FrequencyDictionary] serialized model.
  */
 fun main(args: Array<String>) {
 
-  println("Loading model from '${args[0]}'... ")
-  val model = LanguageDetectorModel.load(FileInputStream(File(args[0])))
+  val model = args[0].let {
+    println("Loading model from '$it'... ")
+    LanguageDetectorModel.load(FileInputStream(File(it)))
+  }
 
-  println("Loading CJK NeuralTokenizer model from '${args[1]}'...")
-  val cjkModel = NeuralTokenizerModel.load(FileInputStream(File(args[1])))
+  val cjkModel = args[1].let {
+    println("Loading CJK NeuralTokenizer model from '$it'...")
+    NeuralTokenizerModel.load(FileInputStream(File(it)))
+  }
 
-  println("Loading dictionary from '${args[2]}'... ")
-  val dictionary = FrequencyDictionary.load(FileInputStream(File(args[2])))
+  val dictionary = args[2].let {
+    println("Loading dictionary from '$it'... ")
+    FrequencyDictionary.load(FileInputStream(File(it)))
+  }
 
   val textTokenizer = TextTokenizer(cjkModel)
   val langDetector = LanguageDetector(model = model, tokenizer = textTokenizer, frequencyDictionary = dictionary)
