@@ -41,19 +41,28 @@ fun main(args: Array<String>) {
 
   val textTokenizer = TextTokenizer(cjkModel)
   val langDetector = LanguageDetector(model = model, tokenizer = textTokenizer, frequencyDictionary = dictionary)
-  var exit = false
 
-  while (!exit) {
+  var text = readInput()
 
-    print("Insert text: ")
-    val text = readLine()!!
+  while (text.isNotEmpty()) {
 
     val lang: Language = langDetector.detectLanguage(text)
     println("Detected language: ${lang.name}")
 
-    print("Do you want to continue? [Y|n] ")
-    exit = readLine()!!.toLowerCase() == "n"
+    text = readInput()
   }
 
   println("Thank you, bye!")
+}
+
+/**
+ * Read a text from the standard input.
+ *
+ * @return the string read
+ */
+private fun readInput(): String {
+
+  print("\nInsert a text (empty to exit): ")
+
+  return readLine()!!.trim()
 }
