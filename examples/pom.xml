@@ -70,7 +70,7 @@
                         <phase>package</phase>
                         <goals> <goal>single</goal> </goals>
                         <configuration>
-                            <finalName>lang-detector-train</finalName>
+                            <finalName>train-language-detector</finalName>
                             <archive>
                                 <manifest>
                                     <addClasspath>true</addClasspath>
@@ -87,7 +87,7 @@
                         <phase>package</phase>
                         <goals> <goal>single</goal> </goals>
                         <configuration>
-                            <finalName>lang-detector-eval</finalName>
+                            <finalName>evaluate-language-detector</finalName>
                             <archive>
                                 <manifest>
                                     <addClasspath>true</addClasspath>
