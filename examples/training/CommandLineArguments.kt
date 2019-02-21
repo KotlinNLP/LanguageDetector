@@ -62,8 +62,8 @@ internal class CommandLineArguments(args: Array<String>) {
    * The file path of the training dataset.
    */
   val trainingSetPath: String by parser.storing(
-    "-c",
-    "--cjk-tokenizer",
+    "-t",
+    "--training-set-path",
     help="the file path of the training dataset"
   )
 
