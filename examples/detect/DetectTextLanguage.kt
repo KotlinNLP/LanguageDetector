@@ -1,9 +1,11 @@
-/* Copyright 2016-present The KotlinNLP Authors. All Rights Reserved.
+/* Copyright 2016-present KotlinNLP Authors. All Rights Reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, you can obtain one at http://mozilla.org/MPL/2.0/.
  * ------------------------------------------------------------------*/
+
+package detect
 
 import com.kotlinnlp.languagedetector.LanguageDetector
 import com.kotlinnlp.languagedetector.LanguageDetectorModel
@@ -17,25 +19,22 @@ import java.io.FileInputStream
 /**
  * Detect the language of a text.
  *
- * Command line arguments:
- *  1. The filename of the [LanguageDetector] serialized model.
- *  2. The filename of the CJK NeuralTokenizer serialized model.
- *  3. The filename of the [FrequencyDictionary] serialized model.
+ * Launch with the '-h' option for help about the command line arguments.
  */
 fun main(args: Array<String>) {
 
-  val model = args[0].let {
+  val parsedArgs = CommandLineArguments(args)
+
+  val model = parsedArgs.langDetectorModelPath.let {
     println("Loading model from '$it'... ")
     LanguageDetectorModel.load(FileInputStream(File(it)))
   }
-
-  val cjkModel = args[1].let {
+  val cjkModel = parsedArgs.cjkTokenizerModelPath.let {
     println("Loading CJK NeuralTokenizer model from '$it'...")
     NeuralTokenizerModel.load(FileInputStream(File(it)))
   }
-
-  val dictionary = args[2].let {
-    println("Loading dictionary from '$it'... ")
+  val dictionary = parsedArgs.frequencyDictPath.let {
+    println("Loading words frequency dictionary from '$it'... ")
     FrequencyDictionary.load(FileInputStream(File(it)))
   }
 

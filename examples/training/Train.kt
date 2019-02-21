@@ -1,9 +1,11 @@
-/* Copyright 2016-present The KotlinNLP Authors. All Rights Reserved.
+/* Copyright 2016-present KotlinNLP Authors. All Rights Reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, you can obtain one at http://mozilla.org/MPL/2.0/.
  * ------------------------------------------------------------------*/
+
+package training
 
 import com.kotlinnlp.languagedetector.LanguageDetector
 import com.kotlinnlp.languagedetector.LanguageDetectorModel
@@ -18,11 +20,14 @@ import com.kotlinnlp.neuraltokenizer.NeuralTokenizerModel
 import com.kotlinnlp.simplednn.core.functionalities.updatemethods.adagrad.AdaGradMethod
 import com.kotlinnlp.simplednn.core.functionalities.updatemethods.adam.ADAMMethod
 import com.kotlinnlp.simplednn.core.layers.LayerType
+import com.kotlinnlp.utils.getLinesCount
 import java.io.File
 import java.io.FileInputStream
 
 /**
  * Train and validate a [LanguageDetector].
+ *
+ * Launch with the '-h' option for help about the command line arguments.
  *
  * Command line arguments:
  *   1. The name of the file in which to save the model.
@@ -34,8 +39,10 @@ import java.io.FileInputStream
  */
 fun main(args: Array<String>) {
 
+  val parsedArgs = CommandLineArguments(args)
+
   println("-- READING DATASET:")
-  val dataset = readDataset(args)
+  val dataset = readDataset(parsedArgs)
 
   val model = LanguageDetectorModel(
     embeddingsSize = 50,
@@ -47,14 +54,18 @@ fun main(args: Array<String>) {
   println("\n-- MODEL:")
   println(model)
 
-  val textTokenizer = TextTokenizer(cjkModel = NeuralTokenizerModel.load(FileInputStream(File(args[1]))))
+  val textTokenizer = TextTokenizer(
+    cjkModel = parsedArgs.cjkTokenizerModelPath.let {
+      println("Loading CJK NeuralTokenizer model from '$it'...")
+      NeuralTokenizerModel.load(FileInputStream(File(it)))
+    })
   val langDetector = LanguageDetector(model = model, tokenizer = textTokenizer)
 
   println("\n-- START TRAINING ON %d SENTENCES".format(dataset.training.size))
 
   TrainingHelper(
     languageDetector = langDetector,
-    epochs = 10,
+    epochs = parsedArgs.epochs,
     batchSize = 1,
     dropout = 0.1,
     paramsUpdateMethod = ADAMMethod(stepSize = 0.001),
@@ -62,17 +73,17 @@ fun main(args: Array<String>) {
   ).train(
     trainingSet = dataset.training,
     validationSet = dataset.validation,
-    modelFilename = args[0])
+    modelFilename = parsedArgs.modelPath)
 
   println("\n-- START VALIDATION ON %d TEST SENTENCES".format(dataset.test.size))
 
-  println("\n-- Loading words frequency dictionary from '${args[2]}'")
-  val dictionary = FrequencyDictionary.load(FileInputStream(File(args[2])))
-
   val validationLangDetector = LanguageDetector(
-    model = LanguageDetectorModel.load(FileInputStream(File(args[0]))),
+    model = LanguageDetectorModel.load(FileInputStream(parsedArgs.modelPath)), // load best model
     tokenizer = textTokenizer,
-    frequencyDictionary = dictionary)
+    frequencyDictionary = parsedArgs.frequencyDictPath.let {
+      println("Loading words frequency dictionary from '$it'... ")
+      FrequencyDictionary.load(FileInputStream(File(it)))
+    })
 
   val accuracy: Double = ValidationHelper(validationLangDetector).validate(dataset.test)
 
@@ -82,37 +93,23 @@ fun main(args: Array<String>) {
 /**
  *
  */
-fun readDataset(args: Array<String>): Dataset {
+private fun readDataset(parsedArgs: CommandLineArguments): Dataset {
 
   val reader = CorpusReader()
 
   return Dataset(
-    training = readDatasetFile(filename = args[3], reader = reader, datasetName = "training"),
-    validation = readDatasetFile(filename = args[4], reader = reader, datasetName = "validation"),
-    test = readDatasetFile(filename = args[5], reader = reader, datasetName = "test")
+    training = readDatasetFile(filename = parsedArgs.trainingSetPath, reader = reader, datasetName = "training"),
+    validation = readDatasetFile(filename = parsedArgs.validationSetPath, reader = reader, datasetName = "validation"),
+    test = readDatasetFile(filename = parsedArgs.testSetPath, reader = reader, datasetName = "test")
   )
 }
 
 /**
  *
  */
-fun readDatasetFile(filename: String, reader: CorpusReader, datasetName: String): ArrayList<Example> {
+private fun readDatasetFile(filename: String, reader: CorpusReader, datasetName: String): ArrayList<Example> {
 
-  val file = File(filename)
+  println("- %-27s %s". format("%s (%d lines):".format(datasetName, getLinesCount(filename)), filename))
 
-  println("- %-27s %s". format("%s (%d lines):".format(datasetName, file.getNumOfLines()), filename))
-
-  return reader.read(file)
-}
-
-/**
- *
- */
-fun File.getNumOfLines(): Int {
-
-  var numOfLines = 0
-
-  this.reader().forEachLine { numOfLines++ }
-
-  return numOfLines
+  return reader.read(File(filename))
 }

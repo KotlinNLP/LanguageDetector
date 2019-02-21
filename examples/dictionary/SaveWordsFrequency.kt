@@ -1,15 +1,18 @@
-/* Copyright 2016-present The KotlinNLP Authors. All Rights Reserved.
+/* Copyright 2016-present KotlinNLP Authors. All Rights Reserved.
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, you can obtain one at http://mozilla.org/MPL/2.0/.
  * ------------------------------------------------------------------*/
 
+package dictionary
+
 import com.kotlinnlp.languagedetector.dataset.CorpusReader
 import com.kotlinnlp.languagedetector.dataset.Example
 import com.kotlinnlp.languagedetector.utils.FrequencyDictionary
 import com.kotlinnlp.languagedetector.utils.TextTokenizer
 import com.kotlinnlp.neuraltokenizer.NeuralTokenizerModel
+import com.kotlinnlp.utils.getLinesCount
 import com.kotlinnlp.utils.progressindicator.ProgressIndicatorBar
 import java.io.File
 import java.io.FileInputStream
@@ -19,22 +22,23 @@ import java.io.FileOutputStream
  * Save the words frequency per language into a [FrequencyDictionary] reading them from a dataset and save the
  * serialized model of the dictionary to file.
  *
- * Command line arguments: *
- *  1. The serialized model of the NeuralTokenizer for Chinese, Japanese and Korean texts.
- *  2. The filename of the input dataset.
- *  3. The output filename of the serialized model of the dictionary.
+ * Launch with the '-h' option for help about the command line arguments.
  */
 fun main(args: Array<String>) {
 
-  println("Loading CJK NeuralTokenizer model from '${args[0]}'...")
-  val cjkModel = NeuralTokenizerModel.load(FileInputStream(File(args[0])))
-  val tokenizer = TextTokenizer(cjkModel)
+  val parsedArgs = CommandLineArguments(args)
 
-  println("Reading dataset from '${args[1]}'...")
-  val dataset: ArrayList<Example> = CorpusReader().read(File(args[1]))
-
+  val tokenizer = TextTokenizer(
+    cjkModel = parsedArgs.cjkTokenizerModelPath.let {
+      println("Loading CJK tokenizer model from '$it'...")
+      NeuralTokenizerModel.load(FileInputStream(File(it)))
+    })
+  val dataset: ArrayList<Example> = parsedArgs.inputFilePath.let {
+    println("Reading dataset from '$it'...")
+    CorpusReader().read(File(it))
+  }
   val dictionary = FrequencyDictionary()
-  val fileSize: Int = File(args[1]).getNumOfLines()
+  val fileSize: Int = getLinesCount(parsedArgs.inputFilePath)
   val progress = ProgressIndicatorBar(fileSize)
 
   println("Counting words occurrences...")
@@ -50,6 +54,6 @@ fun main(args: Array<String>) {
 
   dictionary.normalize()
 
-  println("Saving dictionary to '${args[2]}'...")
-  dictionary.dump(FileOutputStream(File(args[2])))
+  println("Saving dictionary to '${parsedArgs.outputFilePath}'...")
+  dictionary.dump(FileOutputStream(File(parsedArgs.outputFilePath)))
 }
