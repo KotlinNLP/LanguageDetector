@@ -28,14 +28,6 @@ import java.io.FileInputStream
  * Train and validate a [LanguageDetector].
  *
  * Launch with the '-h' option for help about the command line arguments.
- *
- * Command line arguments:
- *   1. The name of the file in which to save the model.
- *   2. The filename of the CJK NeuralTokenizer serialized model.
- *   3. The filename of the [FrequencyDictionary] serialized model.
- *   4. The filename of the training dataset.
- *   5. The filename of the validation dataset.
- *   6. The filename of the test dataset.
  */
 fun main(args: Array<String>) {
 
