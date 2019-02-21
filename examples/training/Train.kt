@@ -51,20 +51,19 @@ fun main(args: Array<String>) {
     maxTokensLength = 100,
     recurrentConnectionType= LayerType.Connection.RAN)
 
-  println("\n-- MODEL:")
-  println(model)
-
   val textTokenizer = TextTokenizer(
     cjkModel = parsedArgs.cjkTokenizerModelPath.let {
-      println("Loading CJK NeuralTokenizer model from '$it'...")
+      println("\nLoading CJK NeuralTokenizer model from '$it'...")
       NeuralTokenizerModel.load(FileInputStream(File(it)))
     })
-  val langDetector = LanguageDetector(model = model, tokenizer = textTokenizer)
+
+  println("\n-- MODEL:")
+  println(model)
 
   println("\n-- START TRAINING ON %d SENTENCES".format(dataset.training.size))
 
   TrainingHelper(
-    languageDetector = langDetector,
+    languageDetector = LanguageDetector(model = model, tokenizer = textTokenizer),
     epochs = parsedArgs.epochs,
     batchSize = 1,
     dropout = 0.1,
