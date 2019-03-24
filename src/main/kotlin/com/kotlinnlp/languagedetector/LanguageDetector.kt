@@ -9,8 +9,8 @@ package com.kotlinnlp.languagedetector
 
 import com.kotlinnlp.languagedetector.utils.*
 import com.kotlinnlp.linguisticdescription.language.Language
+import com.kotlinnlp.simplednn.core.optimizer.ParamsErrorsList
 import com.kotlinnlp.simplednn.deeplearning.attention.han.HANEncoder
-import com.kotlinnlp.simplednn.deeplearning.attention.han.HANParameters
 import com.kotlinnlp.simplednn.deeplearning.attention.han.HierarchySequence
 import com.kotlinnlp.simplednn.simplemath.exp
 import com.kotlinnlp.simplednn.simplemath.ndarray.Shape
@@ -159,7 +159,7 @@ class LanguageDetector(
    *
    * @return the errors of the HAN parameters
    */
-  fun getParamsErrors(copy: Boolean = true): HANParameters = this.encoder.getParamsErrors(copy = copy)
+  fun getParamsErrors(copy: Boolean = true): ParamsErrorsList = this.encoder.getParamsErrors(copy = copy)
 
   /**
    * @param copy a Boolean indicating whether the returned errors must be a copy or a reference

@@ -9,12 +9,10 @@ package com.kotlinnlp.languagedetector.helpers
 
 import com.kotlinnlp.languagedetector.LanguageDetector
 import com.kotlinnlp.languagedetector.dataset.Example
-import com.kotlinnlp.simplednn.core.embeddings.EmbeddingsOptimizer
 import com.kotlinnlp.simplednn.core.functionalities.updatemethods.UpdateMethod
 import com.kotlinnlp.simplednn.core.functionalities.updatemethods.adagrad.AdaGradMethod
 import com.kotlinnlp.simplednn.core.functionalities.updatemethods.adam.ADAMMethod
 import com.kotlinnlp.simplednn.core.optimizer.ParamsOptimizer
-import com.kotlinnlp.simplednn.deeplearning.attention.han.HANParameters
 import com.kotlinnlp.simplednn.simplemath.ndarray.dense.DenseNDArray
 import com.kotlinnlp.utils.ExamplesIndices
 import com.kotlinnlp.utils.Shuffler
@@ -66,16 +64,12 @@ class TrainingHelper(
   /**
    * The optimizer of the parameters of the [languageDetector].
    */
-  private val optimizer: ParamsOptimizer<HANParameters> = ParamsOptimizer(
-    params = this.languageDetector.model.params,
-    updateMethod = paramsUpdateMethod)
+  private val optimizer = ParamsOptimizer(paramsUpdateMethod)
 
   /**
    * The optimizer of the embeddings of the [languageDetector].
    */
-  private val embeddingsOptimizer = EmbeddingsOptimizer(
-    embeddingsMap = this.languageDetector.model.embeddings,
-    updateMethod = embeddingsUpdateMethod)
+  private val embeddingsOptimizer = ParamsOptimizer(embeddingsUpdateMethod)
 
   /**
    * Train the [languageDetector] using the given [trainingSet], validating each epoch if a [validationSet] is given.
@@ -216,7 +210,9 @@ class TrainingHelper(
     val embeddingsErrors: ArrayList<DenseNDArray> = this.languageDetector.getInputSequenceErrors(copy = false)
 
     token.forEachIndexed { charIndex, char ->
-      this.embeddingsOptimizer.accumulate(embeddingKey = char, errors = embeddingsErrors[charIndex])
+      this.embeddingsOptimizer.accumulate(
+        params = this.languageDetector.model.embeddings[char],
+        errors = embeddingsErrors[charIndex])
     }
   }
 

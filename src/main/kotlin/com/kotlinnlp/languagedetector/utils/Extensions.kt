@@ -21,5 +21,5 @@ import com.kotlinnlp.simplednn.deeplearning.attention.han.HierarchySequence
 fun CharSequence.toHierarchySequence(embeddings: EmbeddingsMap<Char>, dropout: Double = 0.0) =
   HierarchySequence(*Array(
     size = this.length,
-    init = { charIndex -> embeddings.get(this[charIndex], dropout = dropout).array.values }
+    init = { charIndex -> embeddings.get(this[charIndex], dropout = dropout).values }
   ))
