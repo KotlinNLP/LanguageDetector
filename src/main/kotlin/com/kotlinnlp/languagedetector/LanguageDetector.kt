@@ -61,8 +61,8 @@ class LanguageDetector(
    *
    * @return the predicted [Language]
    */
-  fun getLanguage(prediction: DenseNDArray): Language
-    = if (prediction.sum() == 0.0) Language.Unknown else this.model.supportedLanguages[prediction.argMaxIndex()]
+  fun getLanguage(prediction: DenseNDArray): Language =
+    if (prediction.sum() == 0.0) Language.Unknown else this.model.supportedLanguages[prediction.argMaxIndex()]
 
   /**
    * Get the languages of the given [text] as probability distribution.
@@ -140,6 +140,7 @@ class LanguageDetector(
    * @return a [DenseNDArray] containing the languages classification of the [token]
    */
   fun classifyToken(token: String, dropout: Double = 0.0): DenseNDArray {
+
     require(token.isNotEmpty()) { "Empty chars sequence" }
 
     return this.encoder.forward(token.toHierarchySequence(this.model.embeddings, dropout = dropout)).copy()
@@ -166,10 +167,9 @@ class LanguageDetector(
    *
    * @return the errors of the input sequence of tokens
    */
-  fun getInputSequenceErrors(copy: Boolean = true): ArrayList<DenseNDArray> {
-    @Suppress("UNCHECKED_CAST")
-    return this.encoder.getInputErrors(copy = copy) as HierarchySequence<DenseNDArray>
-  }
+  @Suppress("UNCHECKED_CAST")
+  fun getInputSequenceErrors(copy: Boolean = true): ArrayList<DenseNDArray> =
+    this.encoder.getInputErrors(copy = copy) as HierarchySequence<DenseNDArray>
 
   /**
    * Tokenize the given [text] and yield its tokens.
