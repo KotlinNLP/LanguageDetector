@@ -65,14 +65,16 @@ class LanguageDetector(
     if (prediction.sum() == 0.0) Language.Unknown else this.model.supportedLanguages[prediction.argMaxIndex()]
 
   /**
-   * Get the full distribution of languages within a prediction.
+   * Get the full distribution of languages within a prediction, sorted by descending score.
    *
    * @param prediction a prediction array of this [LanguageDetector], as output of the [predict] method
    *
-   * @return the list of all the possible languages with the related prediction score
+   * @return the list of all the possible languages with the related prediction score, sorted by descending score
    */
   fun getFullDistribution(prediction: DenseNDArray): List<Pair<Language, Double>> =
-    this.model.supportedLanguages.zip(prediction.toDoubleArray().toList())
+    this.model.supportedLanguages
+      .zip(prediction.toDoubleArray().toList())
+      .sortedByDescending { it.second }
 
   /**
    * Get the languages of the given [text] as probability distribution.
