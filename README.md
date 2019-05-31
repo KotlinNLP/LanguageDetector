@@ -13,7 +13,7 @@ LanguageDetector is part of [KotlinNLP](http://kotlinnlp.com/ "KotlinNLP").
 <dependency>
     <groupId>com.kotlinnlp</groupId>
     <artifactId>languagedetector</artifactId>
-    <version>0.4.7</version>
+    <version>0.4.9</version>
 </dependency>
 ```
 
