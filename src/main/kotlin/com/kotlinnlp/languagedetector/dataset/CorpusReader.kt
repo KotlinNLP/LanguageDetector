@@ -59,12 +59,9 @@ class CorpusReader {
    * @return the [Language] object with the given [languageIsoCode]
    */
   private fun getLanguage(languageIsoCode: String): Language {
+
     require(languageIsoCode.length == 2) { "Invalid language iso code (must be 2 chars long): $languageIsoCode" }
 
-    return if (this.supportedLanguages.containsKey(languageIsoCode)) {
-      this.supportedLanguages[languageIsoCode]!!
-    } else {
-      Language.Unknown
-    }
+    return this.supportedLanguages[languageIsoCode] ?: Language.Unknown
   }
 }
