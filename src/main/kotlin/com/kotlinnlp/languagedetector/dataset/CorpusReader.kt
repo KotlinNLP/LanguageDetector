@@ -31,14 +31,14 @@ class CorpusReader {
   fun read(file: File, maxLines: Int? = null): ArrayList<Example> {
 
     val examples = arrayListOf<Example>()
-    val parser = Parser()
+    val parser = Klaxon()
     var count = 0
 
     file.reader().forEachLine { line ->
 
       if (maxLines == null || count++ < maxLines) {
 
-        val parsedExample = parser.parse(StringBuilder(line)) as JsonObject
+        val parsedExample: JsonObject = parser.parseJsonObject(line.reader())
 
         examples.add(Example(
           text = parsedExample.string("body")!!,
