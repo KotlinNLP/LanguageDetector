@@ -14,7 +14,7 @@ import com.kotlinnlp.simplednn.core.functionalities.updatemethods.adagrad.AdaGra
 import com.kotlinnlp.simplednn.core.functionalities.updatemethods.adam.ADAMMethod
 import com.kotlinnlp.simplednn.core.optimizer.ParamsOptimizer
 import com.kotlinnlp.simplednn.simplemath.ndarray.dense.DenseNDArray
-import com.kotlinnlp.utils.ExamplesIndices
+import com.kotlinnlp.utils.ShuffledIndices
 import com.kotlinnlp.utils.Shuffler
 import com.kotlinnlp.utils.progressindicator.ProgressIndicatorBar
 import java.io.File
@@ -132,7 +132,7 @@ class TrainingHelper(
     this.optimizer.newBatch()
     this.embeddingsOptimizer.newBatch()
 
-    for (exampleIndex in ExamplesIndices(size = trainingSet.size, shuffler = this.shuffler)) {
+    for (exampleIndex in ShuffledIndices(size = trainingSet.size, shuffler = this.shuffler)) {
 
       progress.tick()
 
