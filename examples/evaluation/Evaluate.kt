@@ -14,6 +14,7 @@ import com.kotlinnlp.languagedetector.helpers.ValidationHelper
 import com.kotlinnlp.languagedetector.utils.FrequencyDictionary
 import com.kotlinnlp.languagedetector.utils.TextTokenizer
 import com.kotlinnlp.neuraltokenizer.NeuralTokenizerModel
+import com.xenomachina.argparser.mainBody
 import java.io.File
 import java.io.FileInputStream
 
@@ -22,7 +23,7 @@ import java.io.FileInputStream
  *
  * Launch with the '-h' option for help about the command line arguments.
  */
-fun main(args: Array<String>) {
+fun main(args: Array<String>) = mainBody {
 
   val parsedArgs = CommandLineArguments(args)
 
