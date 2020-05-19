@@ -73,7 +73,7 @@ class LanguageDetectorModel(
     attentionSize = this.attentionSize,
     outputSize = this.supportedLanguages.size,
     outputActivation = Softmax(),
-    biRNNsActivation = Tanh(),
+    biRNNsActivation = Tanh,
     biRNNsConnectionType = recurrentConnectionType,
     gainFactors = listOf(this.hiddenSize.toDouble() / this.embeddingsSize))
 
