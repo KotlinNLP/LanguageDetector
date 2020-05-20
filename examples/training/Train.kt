@@ -18,7 +18,7 @@ import com.kotlinnlp.languagedetector.utils.FrequencyDictionary
 import com.kotlinnlp.languagedetector.utils.TextTokenizer
 import com.kotlinnlp.neuraltokenizer.NeuralTokenizerModel
 import com.kotlinnlp.simplednn.core.functionalities.updatemethods.adagrad.AdaGradMethod
-import com.kotlinnlp.simplednn.core.functionalities.updatemethods.adam.ADAMMethod
+import com.kotlinnlp.simplednn.core.functionalities.updatemethods.radam.RADAMMethod
 import com.kotlinnlp.simplednn.core.layers.LayerType
 import com.kotlinnlp.utils.getLinesCount
 import java.io.File
@@ -59,7 +59,7 @@ fun main(args: Array<String>) {
     epochs = parsedArgs.epochs,
     batchSize = 1,
     dropout = 0.1,
-    paramsUpdateMethod = ADAMMethod(stepSize = 0.001),
+    paramsUpdateMethod = RADAMMethod(stepSize = 0.001),
     embeddingsUpdateMethod = AdaGradMethod(learningRate = 0.1)
   ).train(
     trainingSet = dataset.training,

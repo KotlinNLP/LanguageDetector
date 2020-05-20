@@ -11,7 +11,7 @@ import com.kotlinnlp.languagedetector.LanguageDetector
 import com.kotlinnlp.languagedetector.dataset.Example
 import com.kotlinnlp.simplednn.core.functionalities.updatemethods.UpdateMethod
 import com.kotlinnlp.simplednn.core.functionalities.updatemethods.adagrad.AdaGradMethod
-import com.kotlinnlp.simplednn.core.functionalities.updatemethods.adam.ADAMMethod
+import com.kotlinnlp.simplednn.core.functionalities.updatemethods.radam.RADAMMethod
 import com.kotlinnlp.simplednn.core.optimizer.ParamsOptimizer
 import com.kotlinnlp.simplednn.simplemath.ndarray.dense.DenseNDArray
 import com.kotlinnlp.utils.ShuffledIndices
@@ -37,7 +37,7 @@ class TrainingHelper(
   private val batchSize: Int = 1,
   private val dropout: Double = 0.0,
   private val shuffler: Shuffler? = Shuffler(enablePseudoRandom = true, seed = 743),
-  paramsUpdateMethod: UpdateMethod<*> = ADAMMethod(stepSize = 0.001),
+  paramsUpdateMethod: UpdateMethod<*> = RADAMMethod(stepSize = 0.001),
   embeddingsUpdateMethod: UpdateMethod<*> = AdaGradMethod(learningRate = 0.1)
 ) {
 
