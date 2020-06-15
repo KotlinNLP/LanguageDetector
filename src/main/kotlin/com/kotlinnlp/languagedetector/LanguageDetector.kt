@@ -40,10 +40,7 @@ class LanguageDetector(
   /**
    * The encoder of the input.
    */
-  private val encoder = HANEncoder<DenseNDArray>(
-    model = this.model.han,
-    useDropout = false, // the dropout is used at the embeddings level
-    propagateToInput = true)
+  private val encoder = HANEncoder<DenseNDArray>(model = this.model.han, propagateToInput = true)
 
   /**
    * Detect the [Language] of the given [text].
